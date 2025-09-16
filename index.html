@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Básica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a202c;
+            font-family: 'Inter', sans-serif;
+        }
+        .calculator {
+            background-color: #2d3748;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .display {
+            background-color: #4a5568;
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: right;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            font-weight: bold;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+        .btn {
+            background-color: #4a5568;
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn:hover {
+            background-color: #6a768e;
+        }
+        .btn.operator {
+            background-color: #e53e3e;
+        }
+        .btn.operator:hover {
+            background-color: #f56565;
+        }
+        .btn.clear {
+            background-color: #2b6cb0;
+        }
+        .btn.clear:hover {
+            background-color: #4c82b0;
+        }
+        .btn.equals {
+            background-color: #38a169;
+        }
+        .btn.equals:hover {
+            background-color: #48bb78;
+        }
+    </style>
+</head>
+<body class="bg-gray-800 text-white flex items-center justify-center min-h-screen">
+
+    <div class="calculator bg-gray-700 p-8 rounded-2xl shadow-lg">
+        <div id="display" class="display bg-gray-600 rounded-lg mb-4 p-4 text-4xl font-bold text-right overflow-hidden whitespace-nowrap">0</div>
+        <div class="buttons grid grid-cols-4 gap-3">
+            <button class="btn clear col-span-2" onclick="clearDisplay()">C</button>
+            <button class="btn operator" onclick="appendToDisplay('/')">/</button>
+            <button class="btn operator" onclick="appendToDisplay('*')">*</button>
+
+            <button class="btn" onclick="appendToDisplay('7')">7</button>
+            <button class="btn" onclick="appendToDisplay('8')">8</button>
+            <button class="btn" onclick="appendToDisplay('9')">9</button>
+            <button class="btn operator" onclick="appendToDisplay('-')">-</button>
+
+            <button class="btn" onclick="appendToDisplay('4')">4</button>
+            <button class="btn" onclick="appendToDisplay('5')">5</button>
+            <button class="btn" onclick="appendToDisplay('6')">6</button>
+            <button class="btn operator" onclick="appendToDisplay('+')">+</button>
+
+            <button class="btn" onclick="appendToDisplay('1')">1</button>
+            <button class="btn" onclick="appendToDisplay('2')">2</button>
+            <button class="btn" onclick="appendToDisplay('3')">3</button>
+            <button class="btn equals row-span-2" onclick="calculate()">=</button>
+
+            <button class="btn" onclick="appendToDisplay('0')">0</button>
+            <button class="btn" onclick="appendToDisplay('.')">.</button>
+            <button class="btn" onclick="removeLast()">DEL</button>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+
+        function appendToDisplay(input) {
+            // Evita múltiplos operadores seguidos
+            const lastChar = display.textContent.slice(-1);
+            if (['+', '-', '*', '/'].includes(lastChar) && ['+', '-', '*', '/'].includes(input)) {
+                return;
+            }
+            if (display.textContent === '0' && input !== '.') {
+                display.textContent = input;
+            } else {
+                display.textContent += input;
+            }
+        }
+
+        function clearDisplay() {
+            display.textContent = '0';
+        }
+
+        function calculate() {
+            try {
+                display.textContent = eval(display.textContent.replace(/x/g, '*'));
+            } catch (error) {
+                display.textContent = 'Erro';
+            }
+        }
+
+        function removeLast() {
+            if (display.textContent.length === 1) {
+                display.textContent = '0';
+            } else {
+                display.textContent = display.textContent.slice(0, -1);
+            }
+        }
+    </script>
+</body>
+</html>
